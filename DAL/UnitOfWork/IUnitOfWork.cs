@@ -10,5 +10,6 @@ namespace DAL.UnitOfWork
         ICitizenRepository Citizens { get; }
         IDistrictRepository Districts { get; }
         void Save();
+        //done something...
     }
 }
