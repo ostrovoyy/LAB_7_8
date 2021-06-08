@@ -10,21 +10,21 @@ namespace MenuIterator
     {
         static void Main(string[] args)
         {
-            MenuItem[] mIt1 = new MenuItem[]
+            ReportItem[] rIt1 = new ReportItem[]
             {
-                new MenuItem(){Name="Borshch",Price=70},
-                new MenuItem(){Name="Soup",Price=50},
-                new MenuItem(){Name="Jellied meat",Price=90},
+                new ReportItem(){Name="Borshch",Price=70},
+                new ReportItem(){Name="Soup",Price=50},
+                new ReportItem(){Name="Jellied meat",Price=90},
             };
-            MenuItem[] mIt2 = new MenuItem[]
+            ReportItem[] rIt2 = new ReportItem[]
             {
-                new MenuItem(){Name="Tea",Price=30},
-                new MenuItem(){Name="Coffee",Price=45},
-                new MenuItem(){Name="Cacao",Price=35},
+                new ReportItem(){Name="Tea",Price=30},
+                new ReportItem(){Name="Coffee",Price=45},
+                new ReportItem(){Name="Cacao",Price=35},
             };
-            Menu menu = new Menu(mIt1,mIt2);
+            Report report = new Report(rIt1,rIt2);
             Client client = new Client();
-            client.SeeMenuItems(menu);
+            client.SeeReportItems(menu);
 
             Console.ReadLine();
         }
@@ -32,7 +32,7 @@ namespace MenuIterator
 
     class Client
     {
-        public void SeeMenuItems(Menu menu)
+        public void SeeReportItems(Report report)
         {
             ICategoryIterator iterator = menu.CreateNumerator();
             while (iterator.HasNext())
