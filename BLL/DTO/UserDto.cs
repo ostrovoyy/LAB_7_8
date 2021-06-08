@@ -8,5 +8,6 @@ namespace BLL.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        //added new features...
     }
 }

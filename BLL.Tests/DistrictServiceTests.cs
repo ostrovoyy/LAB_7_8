@@ -30,7 +30,7 @@ namespace BLL.Tests
         public void GetDistricts_DistrictFromDAL_CorrectMappingToDistrictDTO()
         {
             // Arrange
-            User user = new Director(1, "test", 1);
+            CCL.Security.Identity.User user = new Director(1, "test", 1);
             SecurityContext.SetUser(user);
             var DistrictService = GetDistrictService();
 
@@ -48,15 +48,15 @@ namespace BLL.Tests
         IDistrictService GetDistrictService()
         {
             var mockContext = new Mock<IUnitOfWork>();
-            var expectedDistrict = new District() { idDistrict = 1, DamageState = 12000, Name = "Kyiv" };
+            var expectedDistrict = new DAL.Entities.District() { idDistrict = 1, DamageState = 12000, Name = "Kyiv" };
             var mockDbSet = new Mock<IDistrictRepository>();
             mockDbSet.Setup(z =>
                 z.Find(
-                    It.IsAny<Func<District, bool>>(),
+                    It.IsAny<Func<DAL.Entities.District, bool>>(),
                     It.IsAny<int>(),
                     It.IsAny<int>()))
                   .Returns(
-                    new List<District>() { expectedDistrict }
+                    new List<DAL.Entities.District>() { expectedDistrict }
                     );
             mockContext
                 .Setup(context =>

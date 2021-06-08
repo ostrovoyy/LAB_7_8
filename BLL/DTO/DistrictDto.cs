@@ -9,5 +9,6 @@ namespace BLL.DTO
         public int idDistrict { get; set; }
         public string Name { get; set; }
         public double DamageState { get; set; }
+        //added new fields...
     }
 }
