@@ -10,13 +10,13 @@ namespace Facade
     {
         static void Main(string[] args)
         {
-            Cart cart = new Cart();
-            Order order = new Order();
-            Purchase purchase = new Purchase();
+            Citizen citizen = new Citizen();
+            Report report = new Report();
+            District district = new District();
 
-            MakeOrderFacade makeOrder = new MakeOrderFacade(cart, order, purchase);
+            MakeReportFacade makeReport = new MakeReportFacade(citizen, report, district);
             Client client = new Client();
-            client.MakeAnOrder(makeOrder);
+            client.MakeAnReport(makeReport);
 
             Console.ReadLine();
         }
@@ -24,71 +24,65 @@ namespace Facade
 
     class Citizen
     {
-        public void AddDTPItem()
+        public void AddCitizen()
         {
-            Console.WriteLine("Add NewItem");
+            Console.WriteLine("Add NewCitizen");
         }
 
-        public void DeleteDTPItem()
+        public void DeleteCitizen()
         {
-            Console.WriteLine("Delete NewItem");
+            Console.WriteLine("Delete NewCitizen");
         }
 
-        public void SaveDTPItems()
+        public void SaveCitizen()
         {
-            Console.WriteLine("Save NewItems");
-        }
-    }
-
-    class Order
-    {
-        public void PlaceOrder()
-        {
-            Console.WriteLine("Place an order");
-        }
-
-        public void ConfirmOrder()
-        {
-            Console.WriteLine("Confirm an order");
+            Console.WriteLine("Save NewCitizen");
         }
     }
 
-    class Purchase
+    class Report
     {
-        public void SetPaymentMethod()
+        public void PlaceRepotr()
         {
-            Console.WriteLine("Set payment method");
+            Console.WriteLine("Place an Report");
         }
     }
 
-    class MakeOrderFacade
+    class District
     {
-        Cart cart;
-        Order order;
-        Purchase purchase;
-
-        public MakeOrderFacade(Cart c, Order o, Purchase p)
+        public void SetDistrict()
         {
-            cart = c;
-            order = o;
-            purchase = p;
-        }
-
-        public void MakeOrder()
-        {
-            cart.AddMenuItem();
-            cart.SaveMenuItems();
-            order.PlaceOrder();
-            order.ConfirmOrder();
-            purchase.SetPaymentMethod();
+            Console.WriteLine("Choose District");
         }
     }
 
-    class Citizen
+    class MakeReportFacade
     {
-        public void MakeAnOrder(MakeOrderFacade facade)
+        Citizen citizen;
+        Report report;
+        District district;
+
+        public MakeReportFacade(Citizen c, Report o, District p)
         {
-            facade.MakeOrder();
+            citizen = c;
+            report = o;
+            district = p;
+        }
+
+        public void MakeReport()
+        {
+            citizen.AddCitizen();
+            citizen.SaveCitizen();
+            report.PlaceRepotr();
+            district.SetDistrict();
+        }
+    }
+
+    class Client
+    {
+        public void MakeAnReport(MakeReportFacade facade)
+        {
+            facade.MakeReport();
         }
     }
 }
