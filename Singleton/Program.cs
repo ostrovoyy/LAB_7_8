@@ -13,44 +13,44 @@ namespace Singleton
             Citizen citizen1 = new Citizen();
             Citizen citizen2 = new Citizen();
 
-            citizen1.See("menu1");
-            Console.WriteLine(citizen1.Menu.idMenu);
+            citizen1.See("report1");
+            Console.WriteLine(citizen1.Report.idReport);
 
       
 
-            citizen2.See("menu2");
-            Console.WriteLine(citizen2.Menu.idMenu);
+            citizen2.See("report2");
+            Console.WriteLine(citizen2.Report.idReport);
             Console.ReadLine();
         }
     }
 
     class Citizen
     {
-        public Menu Menu { get; set; }
-        public void See(string idMenu)
+        public Report Report { get; set; }
+        public void See(string idReport)
         {
-            Menu = Menu.getInstance(idMenu);
+            Report = Report.getInstance(idReport);
         }
     }
 
-    class Menu
+    class Report
     {
-        private static Menu instance;
-        public string idMenu { get; private set; }
+        private static Report instance;
+        public string idReport { get; private set; }
         private static object syncRoot = new object();
 
-        protected Menu(string id)
+        protected Report(string id)
         {
-            idMenu = id;
+            idReport = id;
         }
 
-        public static Menu getInstance(string id)
+        public static Report getInstance(string id)
         {
             if (instance == null)
                 lock (syncRoot)
                 {
                     if (instance == null)
-                        instance = new Menu(id);
+                        instance = new Report(id);
                 }
             return instance;
         }
