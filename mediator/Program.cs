@@ -1,63 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-abstract class Mediator
+namespace lr13
 {
-    public abstract void Send(string msg, Colleague colleague);
-}
- 
-abstract class Colleague
-{
-    protected Mediator mediator;
- 
-    public Colleague(Mediator mediator)
+    class Program
     {
-        this.mediator = mediator;
+        static void Main()
+        {
+            Context context = new Context(new SlowTrain());
+            Console.WriteLine(string.Format("Trains speed is {0}\n\n", context.State.MaxSpeed));
+
+            context.Request();
+            Console.WriteLine(string.Format("Trains speed is {0}\n", context.State.MaxSpeed));
+
+            context.Request();
+            Console.WriteLine(string.Format("Trains speed is {0}", context.State.MaxSpeed));
+        }
     }
-}
- 
-class ConcreteColleague1 : Colleague
-{
-    public ConcreteColleague1(Mediator mediator)
-        : base(mediator)
-    { }
-  
-    public void Send(string message)
+    abstract class TrainState
     {
-        mediator.Send(message, this);
+        public int MaxSpeed { get; protected set; }
+        public abstract void ChangeState(Context context);
     }
-  
-    public void Notify(string message)
-    { }
-}
- 
-class ConcreteColleague2 : Colleague
-{
-    public ConcreteColleague2(Mediator mediator)
-        : base(mediator)
-    { }
-  
-    public void Send(string message)
+    class FastTrain : TrainState
     {
-        mediator.Send(message, this);
+        public FastTrain()
+        {
+            MaxSpeed = 150;
+        }
+        public override void ChangeState(Context context)
+        {
+            context.State = new SlowTrain();
+            MaxSpeed = 150;
+            Console.WriteLine("Now it is slow train");
+        }
     }
-  
-    public void Notify(string message)
-    { }
-}
- 
-class ConcreteMediator : Mediator
-{
-    public ConcreteColleague1 Colleague1 { get; set; }
-    public ConcreteColleague2 Colleague2 { get; set; }
-    public override void Send(string msg, Colleague colleague)
+    class SlowTrain : TrainState
     {
-        if (Colleague1 == colleague)
-            Colleague2.Notify(msg);
-        else
-            Colleague1.Notify(msg);
+        public SlowTrain()
+        {
+            MaxSpeed = 70;
+        }
+        public override void ChangeState(Context context)
+        {
+            context.State = new FastTrain();
+            MaxSpeed = 70;
+            Console.WriteLine("Now it is fast train");
+        }
+    }
+
+    class Context
+    {
+        public TrainState State { get; set; }
+        public Context(TrainState state)
+        {
+            this.State = state;
+        }
+        public void Request()
+        {
+            this.State.ChangeState(this);
+        }
     }
 }
