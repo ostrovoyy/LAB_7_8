@@ -1,57 +1,54 @@
 ﻿using System;
 
-namespace lr13
+namespace mediator
 {
     class Program
     {
         static void Main()
         {
-            Context context = new Context(new SlowTrain());
-            Console.WriteLine(string.Format("Trains speed is {0}\n\n", context.State.MaxSpeed));
+            Context context = new Context(new LowDamage());
+            Console.WriteLine(string.Format("Damage of District is {0}\n\n", context.State.MaxDamage));
 
             context.Request();
-            Console.WriteLine(string.Format("Trains speed is {0}\n", context.State.MaxSpeed));
-
-            context.Request();
-            Console.WriteLine(string.Format("Trains speed is {0}", context.State.MaxSpeed));
+            Console.WriteLine(string.Format("Damage of District is {0}\n", context.State.MaxDamage));
         }
     }
-    abstract class TrainState
+    abstract class DistrictState
     {
-        public int MaxSpeed { get; protected set; }
+        public int MaxDamage { get; protected set; }
         public abstract void ChangeState(Context context);
     }
-    class FastTrain : TrainState
+    class HighDamage : DistrictState
     {
-        public FastTrain()
+        public HighDamage()
         {
-            MaxSpeed = 150;
+            MaxDamage = 150000;
         }
         public override void ChangeState(Context context)
         {
-            context.State = new SlowTrain();
-            MaxSpeed = 150;
-            Console.WriteLine("Now it is slow train");
+            context.State = new LowDamage();
+            MaxDamage = 150000;
+            Console.WriteLine("Now this district have low damage!");
         }
     }
-    class SlowTrain : TrainState
+    class LowDamage : DistrictState
     {
-        public SlowTrain()
+        public LowDamage()
         {
-            MaxSpeed = 70;
+            MaxDamage = 70000;
         }
         public override void ChangeState(Context context)
         {
-            context.State = new FastTrain();
-            MaxSpeed = 70;
-            Console.WriteLine("Now it is fast train");
+            context.State = new HighDamage();
+            MaxDamage = 70000;
+            Console.WriteLine("Now this district have high damage!");
         }
     }
 
     class Context
     {
-        public TrainState State { get; set; }
-        public Context(TrainState state)
+        public DistrictState State { get; set; }
+        public Context(DistrictState state)
         {
             this.State = state;
         }
