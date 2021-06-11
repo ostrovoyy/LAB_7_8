@@ -12,15 +12,15 @@ namespace MenuIterator
         {
             ReportItem[] rIt1 = new ReportItem[]
             {
-                new ReportItem(){Name="Borshch",Price=70},
-                new ReportItem(){Name="Soup",Price=50},
-                new ReportItem(){Name="Jellied meat",Price=90},
+                new ReportItem(){District="Borshch",Damage=70},
+                new ReportItem(){District="Soup",Damage=50},
+                new ReportItem(){District="Jellied meat",Damage=90},
             };
             ReportItem[] rIt2 = new ReportItem[]
             {
-                new ReportItem(){Name="Tea",Price=30},
-                new ReportItem(){Name="Coffee",Price=45},
-                new ReportItem(){Name="Cacao",Price=35},
+                new ReportItem(){District="Tea",Damage=30},
+                new ReportItem(){District="Coffee",Damage=45},
+                new ReportItem(){District="Cacao",Damage=35},
             };
             Report report = new Report(rIt1,rIt2);
             Client client = new Client();
@@ -34,24 +34,24 @@ namespace MenuIterator
     {
         public void SeeReportItems(Report report)
         {
-            ICategoryIterator iterator = menu.CreateNumerator();
+            IDistrictIterator iterator = report.CreateNumerator();
             while (iterator.HasNext())
             {
-                Category category = iterator.Next();
-                Console.WriteLine("\n"+category.Name);
-                IMenuItemIterator iterator1 = category.CreateNumerator();
+                District district = iterator.Next();
+                Console.WriteLine("\n"+district.Name);
+                IReportItemIterator iterator1 = category.CreateNumerator();
                 while (iterator1.HasNext())
                 {
-                    MenuItem menuItem = iterator1.Next();
+                    ReportItem menuItem = iterator1.Next();
                     Console.WriteLine(menuItem.Name + ", price: " + menuItem.Price);
                 }
             } 
         }
     }
-    interface IMenuItemIterator
+    interface IReportItemIterator
     {
         bool HasNext();
-        MenuItem Next();
+        ReprotItem Next();
     }
     interface IMenuItemNumerable
     {
