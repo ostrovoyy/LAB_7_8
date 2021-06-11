@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MenuIterator
+namespace ReportIterator
 {
     class Program
     {
@@ -12,19 +12,18 @@ namespace MenuIterator
         {
             ReportItem[] rIt1 = new ReportItem[]
             {
-                new ReportItem(){District="Borshch",Damage=70},
-                new ReportItem(){District="Soup",Damage=50},
-                new ReportItem(){District="Jellied meat",Damage=90},
+                new ReportItem(){District="Kherson",Damage=700},
+                new ReportItem(){District="Kherson",Damage=1222},
+                new ReportItem(){District="Kherson",Damage=12290},
             };
             ReportItem[] rIt2 = new ReportItem[]
             {
-                new ReportItem(){District="Tea",Damage=30},
-                new ReportItem(){District="Coffee",Damage=45},
-                new ReportItem(){District="Cacao",Damage=35},
+                new ReportItem(){District="Kyiv",Damage=30},
+                new ReportItem(){District="Kyiv",Damage=45000},
             };
             Report report = new Report(rIt1,rIt2);
             Client client = new Client();
-            client.SeeReportItems(menu);
+            client.SeeReportItems(report);
 
             Console.ReadLine();
         }
@@ -39,11 +38,11 @@ namespace MenuIterator
             {
                 District district = iterator.Next();
                 Console.WriteLine("\n"+district.Name);
-                IReportItemIterator iterator1 = category.CreateNumerator();
+                IReportItemIterator iterator1 = district.CreateNumerator();
                 while (iterator1.HasNext())
                 {
-                    ReportItem menuItem = iterator1.Next();
-                    Console.WriteLine(menuItem.Name + ", price: " + menuItem.Price);
+                    ReportItem reportItem = iterator1.Next();
+                    Console.WriteLine(reportItem.District + ", price: " + reportItem.Damage);
                 }
             } 
         }
@@ -53,62 +52,62 @@ namespace MenuIterator
         bool HasNext();
         ReprotItem Next();
     }
-    interface IMenuItemNumerable
+    interface IReportItemNumerable
     {
-        IMenuItemIterator CreateNumerator();
+        IReportItemIterator CreateNumerator();
         int Count { get; }
-        MenuItem this[int index] { get; }
+        ReportItem this[int index] { get; }
     }
 
-    interface ICategoryIterator
+    interface IDistrictIterator
     {
         bool HasNext();
-        Category Next();
+        District Next();
     }
-    interface ICategoryNumerable
+    interface IDistrictNumerable
     {
-        ICategoryIterator CreateNumerator();
+        IDistrictIterator CreateNumerator();
         int Count { get; }
-        Category this[int index] { get; }
+        District this[int index] { get; }
     }
 
-    class MenuItem
+    class ReportItem
     {
-        public string Name { get; set; }
-        public int Price { get; set; }
+        public string District { get; set; }
+        public int Damage { get; set; }
     }
 
-    class Category : IMenuItemNumerable
+    class District : IReportItemNumerable
     {
         public string Name { get; set; }
-        private MenuItem[] menuItems;
+        private ReportItem[] reportItems;
 
-        public Category(string name, MenuItem[] menuIt)
+        public District(string name, ReportItem[] reportIt)
         {
             Name = name;
-            menuItems = new MenuItem[menuIt.Length];
-            for (int i = 0; i < menuIt.Length; i++)
-                menuItems[i] = menuIt[i];
+            reportItems = new ReportItem[reportIt.Length];
+            for (int i = 0; i < reportIt.Length; i++)
+                reportItems[i] = reportIt[i];
         }
         public int Count
         {
-            get { return menuItems.Length; }
+            get { return reportItems.Length; }
         }
-        public MenuItem this[int index]
+        public ReportItem this[int index]
         {
-            get { return menuItems[index]; }
+            get { return reportItems[index]; }
         }
-        public IMenuItemIterator CreateNumerator()
+        public IReportItemIterator CreateNumerator()
         {
-            return new CategoryNumerator(this);
+            return new DistrictNumerator(this);
         }
     }
 
-    class CategoryNumerator : IMenuItemIterator
+    class DistrictNumerator : IReportItemIterator
     {
-        IMenuItemNumerable aggregate;
+        IReportItemNumerable aggregate;
         int index = 0;
-        public CategoryNumerator(IMenuItemNumerable a)
+        public DistrictNumerator(IReportItemNumerable a)
         {
             aggregate = a;
         }
@@ -117,42 +116,42 @@ namespace MenuIterator
             return index < aggregate.Count;
         }
 
-        public MenuItem Next()
+        public ReportItem Next()
         {
             return aggregate[index++];
         }
     }
 
-    class Menu : ICategoryNumerable
+    class Report : IDistrictNumerable
     {
-        public Category[] Categories;
-        public Menu(MenuItem[] mIt1, MenuItem[] mIt2)
+        public District[] District;
+        public Report(ReportItem[] rIt1, ReportItem[] rIt2)
         {
-            Categories = new Category[]
+            District = new District[]
             {
-                    new Category("Dishes",mIt1),
-                    new Category("Drinks",mIt2)
+                    new District("Kherson",rIt1),
+                    new District("Kyiv",rIt2)
             };
         }
         public int Count
         {
-            get { return Categories.Length; }
+            get { return Districts.Length; }
         }
-        public Category this[int index]
+        public District this[int index]
         {
-            get { return Categories[index]; }
+            get { return Districts[index]; }
         }
-        public ICategoryIterator CreateNumerator()
+        public IDistrictIterator CreateNumerator()
         {
-            return new MenuNumerator(this);
+            return new ReportNumerator(this);
         }
     }
 
-    class MenuNumerator : ICategoryIterator
+    class ReportNumerator : IDistrictIterator
     {
-        ICategoryNumerable aggregate;
+        IDistrictNumerable aggregate;
         int index = 0;
-        public MenuNumerator(ICategoryNumerable a)
+        public ReportNumerator(IDistrictNumerable a)
         {
             aggregate = a;
         }
@@ -161,7 +160,7 @@ namespace MenuIterator
             return index < aggregate.Count;
         }
 
-        public Category Next()
+        public District Next()
         {
             return aggregate[index++];
         }
