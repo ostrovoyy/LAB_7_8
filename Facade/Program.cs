@@ -71,10 +71,10 @@ namespace Facade
 
         public void MakeReport()
         {
-            citizen.AddCitizen();
-            citizen.SaveCitizen();
-            report.PlaceRepotr();
-            district.SetDistrict();
+            citizen.AddCitizen(c);
+            citizen.SaveCitizen(c);
+            report.PlaceRepotr(o);
+            district.SetDistrict(p);
         }
     }
 
